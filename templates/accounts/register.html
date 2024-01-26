@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Create an account</h2>
+<p>Register in the database to access and update details</p>
+{% if error %}
+<p>
+    Error: {{ error }}
+</p>
+{% endif %}
+<form action="/accounts/register/" method="post">
+    {% csrf_token %}
+    <div class="row gtr-uniform">
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="fname" id="name" value="" placeholder="First Name" />            
+        </div>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="lname" id="name" value="" placeholder="Last Name" />            
+        </div>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="name" id="name" value="" placeholder="Username" />            
+        </div>
+        <div class="col-6 col-12-xsmall">
+            <input type="email" name="email" id="email" value="" placeholder="Email" />
+        </div>
+        <div class="col-6 col-12-xsmall">
+            <input type="password" name="password" id="password" value="" placeholder="Password" />
+        </div>    
+    </div>
+    <br>
+    <input type="submit" class="button primary">
+    <input type="reset" class="reset">
+</form>
+
+{% endblock %}

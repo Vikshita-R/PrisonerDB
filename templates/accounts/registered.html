@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Congratulations!</h1>
+<p>You have been successfully registered.</p>
+<p>
+    Here are you details:<br>
+    Name: <b>{{ name }}</b><br>
+    Username: <b>{{ username }}</b><br>
+    Email: <b>{{ email }}</b><br>
+</p>
+{% endblock %}

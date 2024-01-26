@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Add Prisoner</h2>
+<p>Make a new entry of a prisoner to the database</p>
+<form action="/update/prisoner/add/" method="post">
+    {% csrf_token %}
+    <div >
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="fname" id="name" value="" placeholder="First Name" />            
+        </div>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="lname" id="name" value="" placeholder="Last Name" />            
+        </div>
+        <br>
+        <div class="col-6 col-12-xsmall">
+            Join Date: <input type="date" name="join_date" id="join_date" value="" placeholder="Date of entry" />
+        </div>   
+        <br>
+        <div class="col-6 col-12-xsmall">
+            Exit Date: <input type="date" name="exit_date" id="exit_date" value="" placeholder="Date of exit" />
+        </div>  
+        <br>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="ward" id="ward" value="" placeholder="Enter ward number" />
+        </div> 
+        <br>
+        <div class="textarea-wrapper">
+            <textarea name="address" id="address" placeholder="Residence Address" rows="1" style="overflow: hidden;"></textarea>
+        </div>
+        <br>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="mobile" id="mobile" value="" placeholder="Mobile Numbers separated by commas." />            
+        </div>
+        <br>
+        <div class="col-6 col-12-xsmall">
+            <input type="email" name="email" id="email" value="" placeholder="Email" />
+        </div>
+        <br>
+    </div>
+    <input type="submit" class="primary button" value="Add">
+    <input type="reset" class="reset">
+
+</form>
+{% endblock %}

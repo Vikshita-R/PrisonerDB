@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Update or Add</h2>
+<section class="tiles">
+    <article class="style4">
+        <span class="image">
+            <img src="{% static 'images/pic01.jpg' %}" alt="" />
+        </span>
+        <a href="{% url 'prisoner_data' %}">
+            <h2>Add</h2>
+            <div class="content">
+                <p>Add a new prisoner</p>
+            </div>
+        </a>
+    </article>
+    <article class="style5">
+        <span class="image">
+            <img src="{% static 'images/pic02.jpg' %}" alt="" />
+        </span>
+        <a href="">
+            <h2>Update</h2>
+            <div class="content">
+                <p>Update details of an existing prisoner</p>
+            </div>
+        </a>
+    </article>
+</section>
+{% endblock %}
