@@ -58,6 +58,7 @@
 								<!--template designed by <a href="http://html5up.net">HTML5 UP</a>.--></h1>
 								
 							</header>
+							{% if request.user.is_authenticated %}
 							<section class="tiles">
 								<article class="style1">
 									<span class="image">
@@ -94,6 +95,11 @@
 								</article>
 								
 							</section>
+							{% else %}
+							<p>
+								Please login or register yourself!
+							</p>
+							{% endif %}
 						</div>
 					</div>
 

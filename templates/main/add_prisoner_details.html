@@ -2,27 +2,28 @@
 {% load static %}
 
 {% block content %}
-<h2>Update or Add</h2>
+<h2>Add</h2>
+<p>Choose whether to add a prisoner or add details of 1 prisoner</p>
 <section class="tiles">
-    <article class="style4">
+    <article class="style2">
         <span class="image">
             <img src="{% static 'images/pic01.jpg' %}" alt="" />
         </span>
-        <a href="{% url 'prisoner_details' %}">
-            <h2>Add</h2>
+        <a href="{% url 'select_prisoner' %}">
+            <h2>Others</h2>
             <div class="content">
-                <p>Add a new prisoner</p>
+                <p>Other detials of an existing prisoner</p>
             </div>
         </a>
     </article>
-    <article class="style5">
+    <article class="style3">
         <span class="image">
             <img src="{% static 'images/pic02.jpg' %}" alt="" />
         </span>
-        <a href="">
-            <h2>Update</h2>
+        <a href="{% url 'prisoner_data' %}">
+            <h2>Prisoner</h2>
             <div class="content">
-                <p>Update details of an existing prisoner</p>
+                <p>Add a new prisoner</p>
             </div>
         </a>
     </article>

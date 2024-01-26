@@ -12,7 +12,6 @@ class Prisoner(models.Model):
     duration = models.CharField(max_length=100)
     exit_date = models.DateField()
     ward = models.CharField(max_length=100)
-    
 
     @property
     def name(self):
@@ -23,6 +22,7 @@ class Prisoner(models.Model):
 
     def set_mobile_numbers(self, numbers):
         self.mobile_numbers = ','.join(numbers)
+
 
     mobile_numbers_list = property(get_mobile_numbers, set_mobile_numbers)
 
