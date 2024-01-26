@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Add Crime and FIR</h2>
+<p>Enter the crime and FIR details</p>
+<form action="/update/add/prisoner/crime/{{ prisoner_id }}/" method="post">
+    {% csrf_token %}
+    <p>Crime details:</p>
+    <div>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="crime_type" id="name" value="" placeholder="Crime Type" required />            
+        </div>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="crime_location" id="name" value="" placeholder="Crime Location" required/>            
+        </div>
+        <br>
+        <div class="col-6 col-12-xsmall">
+            Date of Crime: <input type="date" name="crime_date" id="join_date" value="" placeholder="Date of Crime" required />
+        </div>   
+    </div>
+    <hr>
+    <p>FIR details:</p>
+    <div>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="fir_number" id="name" value="" placeholder="FIR number" required/><br>         
+        </div>
+        <div class="col-6 col-12-xsmall">
+            <textarea name="fir_description" placeholder="Description of the FIR"></textarea>            
+        </div>
+        <br>
+        <div class="col-6 col-12-xsmall">
+            Date of registeration: <input type="date" name="fir_date" id="join_date" value="" required />
+        </div>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="ps_id" id="join_date" value="" placeholder="Police Station Number" required /><br>
+        </div>
+    </div>
+    <input type="submit" class="primary button" value="Add">
+    <input type="reset" class="reset">
+</form>
+{% endblock %}

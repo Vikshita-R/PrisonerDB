@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Others</h2>
+<p>Add details of the Prisoner</p>
+<section class="tiles">
+    <article class="style3">
+        <span class="image">
+            <img src="{% static 'images/pic07.jpg' %}" alt="" />
+        </span>
+        <a href="/update/add/prisoner/crime/{{ prisoner_id }}">
+            <h2>Crime</h2>
+            <div class="content">
+                <p>Select to view details of a particular prisoner.</p>
+            </div>
+        </a>
+    </article>
+    <article class="style4">
+        <span class="image">
+            <img src="{% static 'images/pic04.jpg' %}" alt="" />
+        </span>
+        <a href="/update/add/prisoner/court/{{ prisoner_id }}">
+            <h2>Court</h2>
+            <div class="content">
+                <p>Update/Add Details to the database.</p>
+            </div>
+        </a>
+    </article>
+    <article class="style6">
+        <span class="image">
+            <img src="{% static 'images/pic09.jpg' %}" alt="" />
+        </span>
+        <a href="/update/add/prisoner/visitor/{{ prisoner_id }}">
+            <h2>Visitor</h2>
+            <div class="content">
+                <p>Update/Add Details to the database.</p>
+            </div>
+        </a>
+    </article>
+    <article class="style2">
+        <span class="image">
+            <img src="{% static 'images/pic06.jpg' %}" alt="" />
+        </span>
+        <a href="/update/add/prisoner/lawyer/{{ prisoner_id }}">
+            <h2>Lawyer</h2>
+            <div class="content">
+                <p>Update/Add Details to the database.</p>
+            </div>
+        </a>
+    </article>
+</section>
+
+{% endblock %}
