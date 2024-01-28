@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Edit Court</h2>
+<p>Edit the court details of the prisoner</p>
+{% for court in courts %}
+<form action="/update/prisoner_select/court/{{ prisoner_id }}/{{ court.id }}/" method="post">
+    {% csrf_token %}
+    <div>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="court_name" id="name" value="{{ court.court_name }}" />            
+        </div>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="court_location" id="name" value="{{ court.court_location }}" />            
+        </div>
+        <br>
+    </div>
+    <input type="submit" class="primary button" value="Edit">
+    <input type="reset" class="reset">
+</form>
+{% endfor %}
+{% endblock %}

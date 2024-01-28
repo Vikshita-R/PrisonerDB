@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Update</h2>
+<p>Select a card to update the following</p>
+<section class="tiles">
+    <article class="style4">
+        <span class="image">
+            <img src="{% static 'images/pic04.jpg' %}" alt="" />
+        </span>
+        <a href="/update/prisoner_select/court/{{ prisoner_id }}">
+            <h2>Court</h2>
+            <div class="content">
+                <p>Update/Add Details to the database.</p>
+            </div>
+        </a>
+    </article>
+    <article class="style6">
+        <span class="image">
+            <img src="{% static 'images/pic09.jpg' %}" alt="" />
+        </span>
+        <a href="/update/prisoner_select/visitor/{{ prisoner_id }}">
+            <h2>Visitor</h2>
+            <div class="content">
+                <p>Update/Add Details to the database.</p>
+            </div>
+        </a>
+    </article>
+    <article class="style2">
+        <span class="image">
+            <img src="{% static 'images/pic06.jpg' %}" alt="" />
+        </span>
+        <a href="/update/prisoner_select/lawyer/{{ prisoner_id }}">
+            <h2>Lawyer</h2>
+            <div class="content">
+                <p>Update/Add Details to the database.</p>
+            </div>
+        </a>
+    </article>
+</section>
+{% endblock %}
