@@ -19,7 +19,7 @@
 							<!-- Logo -->
 								<a href="/" class="logo">
 									<span class="symbol"><img src="{% static 'images/logo.svg' %}" alt="" /></span><span class="title">Prison Database</span>
-								</a>
+								</a> 
 
 							<!-- Nav -->
 								<nav>
@@ -75,7 +75,7 @@
 									<span class="image">
 										<img src="{% static 'images/pic02.jpg' %}" alt="" />
 									</span>
-									<a href="generic.html">
+									<a href="{% url 'view_prisoner_select' %}">
 										<h2>View Prisoner</h2>
 										<div class="content">
 											<p>Select to view details of a particular prisoner.</p>

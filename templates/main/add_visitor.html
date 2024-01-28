@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Add Visitor</h2>
+<p>Add Visitor details</p>
+<form action="/update/add/prisoner/visitor/{{ prisoner_id }}/", method="post">
+    {% csrf_token %}
+    <div >
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="visitor_name" id="visitor_name" value="" placeholder="Name" />            
+        </div>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="relationship" id="relationship" value="" placeholder="Relationship" />            
+        </div>
+        <br>        
+        <div class="textarea-wrapper">
+            <textarea name="address" id="address" placeholder="Residence Address" rows="1" style="overflow: hidden;"></textarea>
+        </div>
+        <br>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="mobile" id="mobile" value="" placeholder="Mobile Numbers separated by commas." />            
+        </div>
+        <br>
+        <div class="col-6 col-12-xsmall">
+            Log in Time: 
+            <input type="datetime-local" name="log_in_time" id="log_in_time" value="" placeholder="log in time. 2024-01-28T12:34:56" />            
+        </div>
+        <br>
+        <div class="col-6 col-12-xsmall">
+            Log out Time: 
+            <input type="datetime-local" name="log_out_time" id="log_out_time" value="" placeholder="log out time.2024-01-28T12:34:56" />            
+        </div>
+        <br>
+    </div>
+    <input type="submit" class="primary button" value="Add">
+    <input type="reset" class="reset">
+
+
+</form>
+{% endblock %}

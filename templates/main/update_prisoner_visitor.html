@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Edit Visitor</h2>
+<p>Edit the visitor details of the prisoner</p>
+{% for visitor in visitors %}
+<form action="/update/prisoner_select/visitor/{{ prisoner_id }}/{{ visitor.id }}/" method="post">
+    {% csrf_token %}
+    <div >
+        <div class="col-6 col-12-xsmall">
+            Visitor: <b>{{ visitor.visitor_name }}</b>
+        </div>        
+        <br>
+        <u>Address:</u>
+        <div class="textarea-wrapper">
+            <textarea name="visitor_address" id="visitor_address" placeholder="Residence Address" rows="1" style="overflow: hidden;">{{ visitor.address }}</textarea>
+        </div>
+        <br>
+        <u>Phone Number:</u>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="mobile" id="mobile" value="{{ visitor.mobile }}" placeholder="Mobile Number" />            
+        </div>
+        <br>
+    <input type="submit" class="primary button" value="Edit">
+    <input type="reset" class="reset">
+</form>
+<hr>
+{% endfor %}
+{% endblock %}

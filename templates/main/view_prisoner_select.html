@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block content %}
-<h2>Others</h2>
-<p>Select the prisoner to add other details</p>
+<h2>View Details</h2>
+<p>Select the prisoner to view details</p>
 {% if error %}
 <p>
     Error: {{ error }}
 </p>
 {% endif %}
-<form action="/update/prisoner/" method="post">
+<form action="/view/prisoner_select/" method="post">
     {% csrf_token %}
     Full Name: <input type="text" name="prisoner_name" placeholder="Eg. ABC XYZ" required /><br>
     UUID: <input type="text" name="UUID" placeholder="Unique ID. Eg. AbcXyz1" required /><br>

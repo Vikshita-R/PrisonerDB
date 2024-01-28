@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Edit Lawyer</h2>
+<p>Edit the Lawyer details of the prisoner</p>
+{% for lawyer in lawyers %}
+<form action="/update/prisoner_select/lawyer/{{ prisoner_id }}/{{ lawyer.id }}/" method="post">
+    {% csrf_token %}
+    <div>
+        <u>Lawyer Name:</u>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="lawyer_name" id="name" value="{{ lawyer.name }}" />            
+        </div><br>
+        <u>Lawyer Bar.No:</u>
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="bar_no" id="name" value="{{ lawyer.bar_no }}" />            
+        </div>
+        <br>
+    </div>
+    <input type="submit" class="primary button" value="Edit">
+    <input type="reset" class="reset">
+</form>
+<hr>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Detials of the selected prisoner</h2>
+<p>
+    <b>Personal details</b><br>
+    First Name: <b>{{ prisoner.first_name }}</b><br>
+    Last Name: <b>{{ prisoner.last_name }}</b><br>
+    Address: <b>{{ prisoner.address }}</b><br>
+    Mobile Numbers: <b>{{ prisoner.mobile_numbers }}<br></b>
+    Email: <b>{{ prisoner.email }}</b><br>
+    Join Date: <b>{{ prisoner.join_date }}</b><br>
+    Exit Date: <b>{{ prisoner.exit_date }}</b><br>
+    Ward Number: <b>{{ prisoner.ward }}</b><br>
+    UUID: <b>{{ prisoner.uuid }}</b><br>
+</p>
+<p>
+    <b>Crime Details</b><br>
+    {% if crimes %}
+    <table>
+        <thead>
+            <tr>
+                <td>Type</td>
+                <td>Location</td>
+                <td>Date</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for crime in crimes %}
+            <tr>
+                <td>
+                    {{ crime.crime_type }}
+                </td>
+                <td>
+                    {{ crime.crime_location }}
+                </td>
+                <td>
+                    {{ crime.crime_date }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    The person has no crimes entered yet
+    {% endif %}
+</p>
+<p>
+    <b>FIR Details</b><br>
+    {% if firs %}
+    <table>
+        <thead>
+            <tr>
+                <td>FIR Number</td>
+                <td>Description</td>
+                <td>Date of registration</td>
+                <td>Police Station ID</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fir in firs %}
+            <tr>
+                <td>
+                    {{ fir.fir_number }}
+                </td>
+                <td>
+                    {{ fir.description }}
+                </td>
+                <td>
+                    {{ fir.date_of_registration }}
+                </td>
+                <td>
+                    {{ fir.ps_id_no }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    The person has no FIRs filed yet
+    {% endif %}
+</p>
+<p>
+    <b>Court Details</b><br>
+    {% if courts %}
+    <table>
+        <thead>
+            <tr>
+                <td>Court Name</td>
+                <td>City</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for court in courts %}
+            <tr>
+                <td>
+                    {{ court.court_name }}
+                </td>
+                <td>
+                    {{ court.court_location }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    The prisoner is not presented in any court.
+    {% endif %}
+
+</p>
+<p>
+    <b>Visitor Details</b><br>
+    {% if visitors %}
+    <table>
+        <thead>
+            <tr>
+                <td>Visitor Name</td>
+                <td>Relationship</td>
+                <td>Mobile Number</td>
+                <td>Address</td>
+                <td>Log in Time</td>
+                <td>Log out Time</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for visitor in visitors %}
+            <tr>
+                <td>
+                    {{ visitor.visitor_name }}
+                </td>
+                <td>
+                    {{ visitor.relationship }}
+                </td>
+                <td>
+                    {{ visitor.mobile }}
+                </td>
+                <td>
+                    {{ visitor.address }}
+                </td>
+                <td>
+                    {{ visitor.log_in_time }}
+                </td>
+                <td>
+                    {{ visitor.log_out_time }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    The Prisoner has no visitors.
+    {% endif %}
+
+</p>
+<p>
+    <b>Lawyer Details</b><br>
+    {% if lawyers %}
+    <table>
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Bar No.</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lawyer in lawyers %}
+            <tr>
+                <td>
+                    {{ lawyer.name }}
+                </td>
+                <td>
+                    {{ lawyer.bar_no }}
+                </td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    {% else %}
+    The Prisoners has no Lawyers.
+    {% endif %}
+</p>
+{% endblock %}

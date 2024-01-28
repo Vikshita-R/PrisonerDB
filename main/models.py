@@ -12,6 +12,7 @@ class Prisoner(models.Model):
     duration = models.CharField(max_length=100)
     exit_date = models.DateField()
     ward = models.CharField(max_length=100)
+    uuid = models.CharField(max_length=100)
 
     @property
     def name(self):
@@ -22,6 +23,9 @@ class Prisoner(models.Model):
 
     def set_mobile_numbers(self, numbers):
         self.mobile_numbers = ','.join(numbers)
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
 
 
     mobile_numbers_list = property(get_mobile_numbers, set_mobile_numbers)
@@ -71,8 +75,7 @@ class Visitor(models.Model):
 class Lawyer(models.Model):
     name = models.CharField(max_length=100)
     bar_no = models.CharField(max_length=100)
-    prisoners = models.ForeignKey(Prisoner, on_delete=models.CASCADE, related_name="prisoners", null=True, blank=True)
+    prisoner = models.ForeignKey(Prisoner, on_delete=models.CASCADE, related_name="prisoner", null=True, blank=True)
     
-
     def __str__(self):
         return self.name

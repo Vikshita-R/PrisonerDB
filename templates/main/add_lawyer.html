@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Add Lawyer</h2>
+<p>Add Lawyer Details</p>
+<form action="/update/add/prisoner/lawyer/{{ prisoner_id }}/", method="post">
+    {% csrf_token %}
+    <div >
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="name" id="name" value="" placeholder="Name" />            
+        </div>
+        <br>        
+        
+        <div class="col-6 col-12-xsmall">
+            <input type="text" name="bar_no" id="bar_no" value="" placeholder="Bar No." />            
+        </div>
+        <br>
+    </div>
+    <input type="submit" class="primary button" value="Add">
+    <input type="reset" class="reset">
+
+
+</form>
+{% endblock %}
