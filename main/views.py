@@ -29,8 +29,8 @@ def select_prisoner(request):
         prisoner_id = None
         prisoners = Prisoner.objects.filter(first_name=split[0])
         for prisoner in prisoners:
-            if f'{prisoner.first_name} {prisoner.last_name}'.lower() == name.lower():
-                prisoner_id = prisoner.id
+            if f'{prisoner.first_name} {prisoner.last_name}'.lower() == name.lower(): # type: ignore
+                prisoner_id = prisoner.id # type: ignore
 
         return redirect(f"/update/prisoner/{prisoner_id}")
     else:
@@ -146,23 +146,66 @@ def visitor_data(request):
         mobile = request.POST["mobile"]
         address = request.POST["address"]
 
-    Visitor.objects.create(
-        visitor_name=visitor_name,
-        relationship=relationship,
-        mobile=mobile,
-        address=address
-    )
+        Visitor.objects.create(
+            visitor_name=visitor_name,
+            relationship=relationship,
+            mobile=mobile,
+            address=address
+        )
 
 
-def Lawyer_data(request):
+def lawyer_data(request):
     if request.method == "POST":
         name = request.POST["name"]
         bar_no = request.POST["bar_no"]
 
-    Lawyer.objects.create(
-        name=name,
-        bar_no=bar_no
-    )
+        Lawyer.objects.create(
+            name=name,
+            bar_no=bar_no
+        )
+
+def update_prisoner_select(request):
+    if request.method == "POST":
+        name = request.POST["prisoner_name"]
+        split = name.split()
+        prisoner_id = None
+        prisoners = Prisoner.objects.filter(first_name=split[0])
+        for prisoner in prisoners:
+            if f'{prisoner.first_name} {prisoner.last_name}'.lower() == name.lower(): # type: ignore
+                prisoner_id = prisoner.id # type: ignore
+
+        return redirect(f"/update/prisoner_select/{prisoner_id}")
+    else:
+        return render(request, "main/update_prisoner_select.html")
+    
+
+def update_show_options(request, prisoner_id):
+    data = {
+        "prisoner_id": prisoner_id
+    }
+    return render(request, "main/update_show_options.html", data)
+
+
+def update_prisoner_court(request, prisoner_id):
+    prisoner = Prisoner.objects.get(id=prisoner_id)
+    courts = Court.objects.filter(prisoner=prisoner)
+    data = {
+        "courts": courts,
+        "prisoner_id": prisoner_id,
+    }
+    return render(request, "main/update_prisoner_court.html", data)
+
+
+def edit_update_prisoner_court(request, prisoner_id, court_id):
+    court = Court.objects.get(id=court_id)
+    court_name = request.POST["court_name"]
+    court_location = request.POST["court_location"]
+
+    court.court_name = court_name
+    court.court_location = court_location
+    court.save()
+
+    return redirect(f"/update/prisoner_select/court/{prisoner_id}")
 
 def generic(request):
     return render(request, "base.html")
