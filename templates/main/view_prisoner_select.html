@@ -11,8 +11,7 @@
 {% endif %}
 <form action="/view/prisoner_select/" method="post">
     {% csrf_token %}
-    Full Name: <input type="text" name="prisoner_name" placeholder="Eg. ABC XYZ" required /><br>
-    UUID: <input type="text" name="UUID" placeholder="Unique ID. Eg. AbcXyz1" required /><br>
+    <b>First Name:</b> <input type="text" name="prisoner_name" placeholder="Eg. ABC XYZ" required /><br>
     <input type="submit" value="Submit" class="button primary">
 </form>
 {% endblock %}

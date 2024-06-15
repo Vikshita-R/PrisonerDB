@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%f5px%-!63r5i**u@7lllimrh8*-a^48z)7dc7u4kyq#2w_+_!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
@@ -76,18 +76,18 @@ WSGI_APPLICATION = 'PrisonerDB.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     "ENGINE": "django.db.backends.mysql",
-    #     "NAME": "prisonerdb",
-    #     "USER": "root",
-    #     "PASSWORD": "Daffodil",
-    #     "HOST": "127.0.0.1",
-    #     "PORT": "3306",
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "prisonerdb",
+        "USER": "root",
+        "PASSWORD": "Daffodil",
+        "HOST": "127.0.0.1",
+        "PORT": "3306",
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / "db.sqlite3",
+    # }
 }
 
 

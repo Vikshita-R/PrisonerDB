@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Visitors</h2>
+<p>View Visitors' information</p>
+<table>
+    <thead>
+        <tr>
+            <td><b>Prisoner Name</b></td>
+            <td><b>Prisoner UUID</b></td>
+            <td><b>Visitor Name</b></td>
+            <td><b>Relationship</b></td>
+            <td><b>Address</b></td>
+            <td><b>Mobile</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for visitor in visitors_list %}
+        <tr>
+            <td>{{ visitor.prisoner }}</td>
+            <td>{{ visitor.prisoner.uuid }}</td>
+            <td>{{ visitor.visitor_name }}</td>
+            <td>{{ visitor.relationship }}</td>
+            <td>{{ visitor.address }}</td>
+            <td>{{ visitor.mobile }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

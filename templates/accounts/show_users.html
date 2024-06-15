@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Users</h2>
+<p>Required details of the users of this database.: </p>
+<table>
+    <thead>
+        <tr>
+            <td><b>First name</b></td>
+            <td><b>Username</b></td>
+            <td><b>Can Update Database</b></td>
+            <td><b>Last Login</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user, group in users_groups %}        
+        {% if user.is_superuser == 0 %}
+        <tr>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.username }}</td>
+            {% if group %}
+            <td>Yes</td>
+            {% else %}
+            <td>No</td>
+            {% endif %}
+            <td>{{ user.last_login }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

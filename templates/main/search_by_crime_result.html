@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2></h2>
+<ul>
+    {% if crimes %}
+    {% for crime in crimes %}
+    <b>{{ crime.prisoner.name }}</b> committed <b>{{ crime.fir.description }}</b> on {{ crime.crime_date }}
+    <br>
+    {% endfor %}
+    {% else %}
+    <h2>No prisoner of this jail has committed this crime</h2>
+    {% endif %}
+</ul>
+
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>View Database info based on certain filters</h2>
+<section>
+    <p>View no. of people in each cell</p>
+    <form action="{% url 'search_by_cell' %}" method="get"> <!--change url-->
+        <label for="cell_no">Select Cell no:</label>
+        <select name="cell_no" id="cell_no">
+            <option value="" disabled selected hidden>Choose Option</option>
+            <option value="cell1">1</option>
+            <option value="cell2">2</option>
+            <option value="cell3">3</option>
+            <option value="cell4">4</option>
+            <option value="cell5">5</option>
+            <br>
+        </select>
+        <br>
+        <button type="submit">Search</button>
+    </form>
+</section>
+<br>
+<section>
+    <p>View prisoners related to a case</p>
+    <form action="{% url 'search_by_crime' %}" method="get"> <!--change url-->
+        <label for="case_type">Select Type of case:</label>
+        <select name="case_type" id="case_type">
+            <option value="" disabled selected hidden>Choose Option</option>
+            <option value="option1">Violent Crimes</option>
+            <option value="option2">Sex Crime</option>
+            <option value="option3">Property Crime</option>
+            <option value="option4">Fraud(White Collar Crime)</option>
+            <option value="option5">Drug Crime</option>
+            <option value="option6">Cybercrime</option>
+            <option value="option7">Organised Crime</option>
+            <br>
+        </select>
+        <br>
+        <button type="submit">Search</button>
+    </form>
+</section>
+<br>
+<section>
+    <form action="{% url 'search_by_gender' %}" method="get">
+        <label for="gender">Select Gender:</label>
+        <select name="gender" id="gender">
+            <option value="" disabled selected hidden>Choose Option</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <!--
+            <option value="">Other</option>
+            -->
+            <br>
+        </select>
+        <br>
+        <button type="submit">Search</button>
+    </form>
+</section>
+{% endblock %}

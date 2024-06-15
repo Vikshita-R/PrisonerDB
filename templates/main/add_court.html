@@ -3,7 +3,7 @@
 
 {% block content %}
 <h2>Add Court</h2>
-<p>Add the court details</p>
+<p><b>Add the court details</b></p>
 <form action="/update/add/prisoner/court/{{ prisoner_id }}/" method="post">
     {% csrf_token %}
     <div>
@@ -11,7 +11,7 @@
             <input type="text" name="court_name" id="name" value="" placeholder="Court Name" />            
         </div>
         <div class="col-6 col-12-xsmall">
-            <input type="text" name="court_location" id="name" value="" placeholder="City" />            
+            <input type="text" name="court_location" id="name" value="" placeholder="Location" />            
         </div>
         <br>
     </div>

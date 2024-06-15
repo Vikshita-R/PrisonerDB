@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User, auth
+from django.contrib.auth.models import User, auth, Group
 
 # Create your views here.
 
@@ -10,15 +10,24 @@ def register(request):
         email = request.POST["email"]
         password = request.POST["password"]
         username = request.POST["name"]
+        staff = request.POST.get('staff')
     
         if not User.objects.filter(username=username).exists() and not User.objects.filter(email=email).exists():
-            User.objects.create_user(
+            user = User.objects.create_user(
                 username=username,
                 email=email,
                 password=password,
                 first_name=first_name,
                 last_name=last_name
             )
+            if staff == 'on':
+                group = Group.objects.get(name='staff')
+                user.groups.add(group)
+                user.save()
+            else:
+                group = Group.objects.get(name="non_staff")
+                user.groups.add(group)
+                user.save()
             data = {
                 'name' : first_name + " " + last_name,
                 'username' : username,
@@ -64,3 +73,15 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect("/")
+
+def show_users(request):
+    users = User.objects.all()
+    groups = []
+    for user in users:
+        groups.append(user.groups.filter(name="staff").exists())
+    users_groups = zip(users, groups)
+    data = {
+        'users_groups': users_groups
+    }
+    return render(request, "accounts/show_users.html", data)
+

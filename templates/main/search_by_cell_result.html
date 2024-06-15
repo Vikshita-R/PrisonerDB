@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Prisoners belonging to cell number {{ cell_no }} are: </h2>
+
+<table>
+    <thead>
+        <tr>
+            <td><b>Prisoner's Name</b></td>
+            <td><b>Unique ID</b></td>
+            <td><b>Crime committed</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prisoner, crimes in prisoners_crimes %}
+        <tr>
+            <td>{{ prisoner.name }}</td>
+            <td>{{ prisoner.uuid }}</td>
+            <td>
+                <ul>
+                    {% for crime in crimes %}
+                    <li>{{ crime.crime_type }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>    
+</table>
+{% endblock %}
+

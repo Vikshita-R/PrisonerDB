@@ -3,7 +3,7 @@
 
 {% block content %}
 <h2>Add Visitor</h2>
-<p>Add Visitor details</p>
+<p><b>Add Visitor details</b></p>
 <form action="/update/add/prisoner/visitor/{{ prisoner_id }}/", method="post">
     {% csrf_token %}
     <div >
@@ -19,7 +19,7 @@
         </div>
         <br>
         <div class="col-6 col-12-xsmall">
-            <input type="text" name="mobile" id="mobile" value="" placeholder="Mobile Numbers separated by commas." />            
+            <input type="text" name="mobile" id="mobile" value="" placeholder="Mobile Number" />            
         </div>
         <br>
         <div class="col-6 col-12-xsmall">

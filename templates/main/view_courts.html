@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Courts</h2>
+<p>View Courts information</p>
+<table>
+    <thead>
+        <tr>
+            <td><b>Prisoner Name</b></td>
+            <td><b>Prisoner UUID</b></td>
+            <td><b>Court Name</b></td>
+            <td><b>Court Location</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for court in courts_list %}
+        <tr>
+            <td>{{ court.prisoner }}</td>
+            <td>{{ court.prisoner.uuid }}</td>
+            <td>{{ court.court_name }}</td>
+            <td>{{ court.court_location }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

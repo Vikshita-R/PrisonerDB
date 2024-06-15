@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Others</h2>
+<p>Select the prisoner to add other details</p>
+<form action="/delete_prisoner_select/" method="post">
+    {% csrf_token %}
+    <b>First Name:</b> <input type="text" name="prisoner_name" placeholder="Eg. ABC XYZ" required /><br>
+    <input type="submit" value="Submit" class="button primary">
+</form>
+{% endblock %}

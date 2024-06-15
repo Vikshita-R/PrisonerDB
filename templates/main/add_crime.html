@@ -6,7 +6,7 @@
 <p>Enter the crime and FIR details</p>
 <form action="/update/add/prisoner/crime/{{ prisoner_id }}/" method="post">
     {% csrf_token %}
-    <p>Crime details:</p>
+    <p><b>Crime details:</b></p>
     <div>
         <div class="col-6 col-12-xsmall">
             <input type="text" name="crime_type" id="name" value="" placeholder="Crime Type" required />            
@@ -20,7 +20,7 @@
         </div>   
     </div>
     <hr>
-    <p>FIR details:</p>
+    <p><b>FIR details:</b></p>
     <div>
         <div class="col-6 col-12-xsmall">
             <input type="text" name="fir_number" id="name" value="" placeholder="FIR number" required/><br>         

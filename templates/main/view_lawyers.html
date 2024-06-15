@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Lawyers</h2>
+<p>View Lawyer Names and their BAR No. </p>
+<table>
+    <thead>
+        <tr>
+            <td><b>Prisoner Name</b></td>
+            <td><b>Prisoner UUID</b></td>
+            <td><b>Lawyer Name</b></td>
+            <td><b>BAR No.</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lawyer in lawyers_list %}
+        <tr>
+            <td>{{ lawyer.prisoner }}</td>
+            <td>{{ lawyer.prisoner.uuid }}</td>
+            <td>{{ lawyer.name }}</td>
+            <td>{{ lawyer.bar_no }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

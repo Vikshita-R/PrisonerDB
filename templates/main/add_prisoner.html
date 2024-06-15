@@ -3,27 +3,34 @@
 
 {% block content %}
 <h2>Add Prisoner</h2>
-<p>Make a new entry of a prisoner to the database</p>
+<p><b>Make a new entry of a prisoner to the database</b></p>
+{% if error %}
+<font color='red'><b>{{ error }}</b></font>
+{% endif %}
 <form action="/update/add/prisoner/" method="post">
     {% csrf_token %}
     <div >
         <div class="col-6 col-12-xsmall">
-            <input type="text" name="fname" id="name" value="" placeholder="First Name" />            
+            <input type="text" name="fname" id="name" value="" placeholder="First Name" required/>            
         </div>
         <div class="col-6 col-12-xsmall">
-            <input type="text" name="lname" id="name" value="" placeholder="Last Name" />            
+            <input type="text" name="lname" id="name" value="" placeholder="Last Name" required/>            
         </div>
         <br>
         <div class="col-6 col-12-xsmall">
-            Join Date: <input type="date" name="join_date" id="join_date" value="" placeholder="Date of entry" />
+            <input type="text" name="gender" id="gender" value="" placeholder="Enter M for male, F for female, O for others" required />            
+        </div>
+        <br>
+        <div class="col-6 col-12-xsmall">
+            Join Date: <input type="date" name="join_date" id="join_date" value="" placeholder="Date of entry" required />
         </div>   
         <br>
         <div class="col-6 col-12-xsmall">
-            Exit Date: <input type="date" name="exit_date" id="exit_date" value="" placeholder="Date of exit" />
+            Exit Date: <input type="date" name="exit_date" id="exit_date" value="" placeholder="Date of exit " /> (Note: Leave it empty for life imprisonment)
         </div>  
         <br>
         <div class="col-6 col-12-xsmall">
-            <input type="text" name="ward" id="ward" value="" placeholder="Enter ward number" />
+            <input type="text" name="ward" id="ward" value="" placeholder="Enter ward number" required />
         </div> 
         <br>
         <div class="col-6 col-12-xsmall">
@@ -31,15 +38,15 @@
         </div> 
         <br>
         <div class="textarea-wrapper">
-            <textarea name="address" id="address" placeholder="Residence Address" rows="1" style="overflow: hidden;"></textarea>
+            <textarea name="address" id="address" placeholder="Residence Address" rows="1" style="overflow: hidden;" required></textarea>
         </div>
         <br>
         <div class="col-6 col-12-xsmall">
-            <input type="text" name="mobile" id="mobile" value="" placeholder="Mobile Numbers separated by commas." />            
+            <input type="text" name="mobile" id="mobile" value="" placeholder="Mobile Number" required />            
         </div>
         <br>
         <div class="col-6 col-12-xsmall">
-            <input type="email" name="email" id="email" value="" placeholder="Email" />
+            <input type="email" name="email" id="email" value="" placeholder="Email" required />
         </div>
         <br>
     </div>

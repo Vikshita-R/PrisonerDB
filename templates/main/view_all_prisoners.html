@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>All Prisoners</h2>
+<p>View Important Prisoner Information</p>
+<table>
+    <thead>
+        <tr>
+            <td><b>Prisoner Name</b></td>
+            <td><b>UUID</b></td>
+            <td><b>Ward no</b></td>
+            <td><b>Duration</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prisoner, duration in prisoners_durations %}
+        <tr>
+            <td>{{ prisoner.name }}</td>
+            <td>{{ prisoner.uuid }}</td>
+            <td>{{ prisoner.ward }}</td>
+            <td>
+                {% if duration|length != 1 %}
+                {{ duration.0 }} years, {{ duration.1 }} months, {{ duration.2 }} week, {{ duration.3 }} days 
+                {% else %}
+                {{ duration.0 }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

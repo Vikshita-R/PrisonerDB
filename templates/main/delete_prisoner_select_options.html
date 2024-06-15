@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Select Prisoner</h2>
+<p>
+    Here are the favourable options. Please click on the wanted prisoner <br>
+    {% if prisoners %}
+    <table>
+        <thead>
+            <tr>
+                <td><b>Prisoner Name</b></td>
+                <td><b>Ward No.</b></td>
+                <td><b>Mobile No.</b></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prisoner in prisoners %}
+            <tr>
+                <td><a href="/delete_prisoner_select/{{ prisoner.id }}">{{ prisoner.name }}</a></td>
+                <td>{{ prisoner.ward }}</td>
+                <td>{{ prisoner.mobile_numbers }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <br><b>
+    No Prisoners with that first name found!</b>
+    {% endif %}
+</p>
+{% endblock %}

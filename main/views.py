@@ -3,6 +3,11 @@ from django.http import HttpResponse
 from django.apps import apps
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+import re
+
+from .models import Court
+from .models import Visitor
+from .models import Lawyer
 
 Prisoner = apps.get_model("main", "Prisoner")
 FIR = apps.get_model("main", "FIR")
@@ -13,8 +18,61 @@ Lawyer = apps.get_model("main", "Lawyer")
 # Create your views here.
 
 def index(request):
-    return render(request, "index.html")
+    prisoners = Prisoner.objects.all()
+    for prisoner in prisoners:
+        if prisoner.exit_date:
+            delete = delete_prisoner(str(prisoner.exit_date))
+            if delete:
+                crimes = Crime.objects.filter(prisoner=prisoner)
+                for crime in crimes:
+                    fir = FIR.objects.get(crime.fir_id)
+                    fir.delete()
+                prisoner.delete()
+    data = {}
+    if request.user.is_authenticated:
+        groups = []
+        for group in request.user.groups.all():
+            groups.append(group.name)
+        data = {
+            "groups": groups
+        }
+    return render(request, "index.html", data)
 
+def delete_prisoner(end_date):
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+    today = datetime.now()
+    #print(f"{end_date < today}")   
+
+    return end_date < today
+
+def view_database(request):
+    return render(request, "main/view_database_options.html")
+
+def view_all_prisoners(request):
+    prisoner_list = Prisoner.objects.all()
+    durations = []
+    for prisoner in prisoner_list:
+        durations.append(prisoner.duration.split("-"))
+    prisoners_durations = zip(prisoner_list, durations)
+    data = {
+        "prisoners_durations": prisoners_durations
+    }
+    return render(request, "main/view_all_prisoners.html", data)
+
+def view_courts(request):
+    courts_list = Court.objects.all()
+    return render(request, "main/view_courts.html",
+                  {'courts_list': courts_list})
+
+def view_visitors(request):
+    visitors_list = Visitor.objects.all()
+    return render(request, "main/view_visitors.html",
+                  {'visitors_list': visitors_list})
+
+def view_lawyers(request):
+    lawyers_list = Lawyer.objects.all()
+    return render(request, "main/view_lawyers.html", 
+                  {'lawyers_list': lawyers_list})
 
 def update_or_add(request):
     return render(request, "main/update_or_add.html")
@@ -23,23 +81,34 @@ def add_prisoner_details(request):
     return render(request, "main/add_prisoner_details.html")
 
 def select_prisoner(request):
+    # if request.method == "POST":
+    #     name = request.POST["prisoner_name"]
+    #     uuid = request.POST["UUID"]
+    #     split = name.split()
+    #     prisoner_id = None
+    #     prisoners = Prisoner.objects.filter(first_name=split[0])
+    #     for prisoner in prisoners:
+    #         if f'{prisoner.first_name} {prisoner.last_name}'.lower() == name.lower() and prisoner.uuid == uuid: # type: ignore
+    #             prisoner_id = prisoner.id # type: ignore
+
+    #     if prisoner_id == None:
+    #         data = {
+    #             "error": "Prisoner Doesn't Exist!"
+    #         }
+    #         return render(request, "main/select_prisoner.html", data)
+
+    #     return redirect(f"/update/prisoner/{prisoner_id}")
+    # else:
+    #     return render(request, "main/select_prisoner.html")
     if request.method == "POST":
-        name = request.POST["prisoner_name"]
-        uuid = request.POST["UUID"]
-        split = name.split()
-        prisoner_id = None
-        prisoners = Prisoner.objects.filter(first_name=split[0])
-        for prisoner in prisoners:
-            if f'{prisoner.first_name} {prisoner.last_name}'.lower() == name.lower() and prisoner.uuid == uuid: # type: ignore
-                prisoner_id = prisoner.id # type: ignore
+        first_name = request.POST["prisoner_name"]
+        prisoners = Prisoner.objects.filter(first_name=first_name)
 
-        if prisoner_id == None:
-            data = {
-                "error": "Prisoner Doesn't Exist!"
-            }
-            return render(request, "main/select_prisoner.html", data)
-
-        return redirect(f"/update/prisoner/{prisoner_id}")
+        data = {
+            "prisoners": prisoners,
+        }
+        
+        return render(request, "main/add_prisoner_options.html", data)
     else:
         return render(request, "main/select_prisoner.html")
     
@@ -56,18 +125,45 @@ def prisoner_data(request):
     if request.method == "POST":
         fname = request.POST["fname"]
         lname = request.POST["lname"]
+        gender = request.POST["gender"]
         address = request.POST["address"]
         mobile = request.POST["mobile"]
+        mobile_is_num = bool(re.match(r'^\d+$', mobile))
+        if not mobile_is_num:
+            data = {
+                "error": "Mobile No. should be a number only"
+            }
+            
+            return render(request, "main/add_prisoner.html", data)
+        elif not (int(mobile) >= 1000000000 and int(mobile) <= 9999999999):
+            data = {
+                "error": "Mobile No. should be a 10 digit"
+            }
+            
+            return render(request, "main/add_prisoner.html", data)
         email = request.POST["email"]
         join_date = request.POST["join_date"]
         exit_date = request.POST["exit_date"]
-        duration = get_duration(start_date=join_date, end_date=exit_date)
+        print("here")
+        if exit_date:
+            duration = get_duration(start_date=join_date, end_date=exit_date)
+        else:
+            duration = "Life Imprisonment"
+            exit_date = None
         ward = request.POST["ward"]
+        ward_is_num = bool(re.match(r'^\d+$', ward))
+        if not ward_is_num:
+            data = {
+                "error": "Ward No. should be a number only"
+            }
+            
+            return render(request, "main/add_prisoner.html", data)
         uuid = request.POST["UUID"]
 
         Prisoner.objects.create(
-            first_name=fname,
-            last_name=lname,
+            first_name=str(fname).strip(),
+            last_name=str(lname).strip(),
+            gender=gender,
             address=address,
             mobile_numbers=mobile,
             email=email,
@@ -77,8 +173,8 @@ def prisoner_data(request):
             ward=ward,
             uuid=uuid
         )
-
-        return redirect('/')
+        
+        return redirect('/confirmation/')
     else:
         return render(request, "main/add_prisoner.html")
 
@@ -122,7 +218,7 @@ def crime_data(request, prisoner_id):
             fir=fir
         )
 
-        return redirect("/")
+        return redirect("/confirmation/")
     else:  #to show the html page to add details
         data = {
             "prisoner_id": prisoner_id,
@@ -141,7 +237,7 @@ def court_data(request, prisoner_id):
             prisoner=prisoner
         )
 
-        return redirect("/")
+        return redirect("/confirmation/")
     else:
         data = {
             "prisoner_id": prisoner_id
@@ -167,7 +263,7 @@ def visitor_data(request, prisoner_id):
             log_out_time=log_out_time,
             prisoner=prisoner
         )
-        return redirect("/")
+        return redirect("/confirmation/")
     
     else:
         data = {
@@ -187,7 +283,7 @@ def lawyer_data(request,prisoner_id):
             bar_no=bar_no,
             prisoner=prisoner
         )
-        return redirect("/")
+        return redirect("/confirmation/")
     
     else:
         data = {
@@ -197,22 +293,14 @@ def lawyer_data(request,prisoner_id):
 
 def update_prisoner_select(request):
     if request.method == "POST":
-        name = request.POST["prisoner_name"]
-        uuid = request.POST["UUID"]
-        split = name.split()
-        prisoner_id = None
-        prisoners = Prisoner.objects.filter(first_name=split[0])
-        for prisoner in prisoners:
-            if f'{prisoner.first_name} {prisoner.last_name}'.lower() == name.lower() and prisoner.uuid == uuid: # type: ignore
-                prisoner_id = prisoner.id # type: ignore
-        
-        if prisoner_id == None:
-            data = {
-                "error": "Prisoner Doesn't Exist!"
-            }
-            return render(request, "main/select_prisoner.html", data)
+        first_name = request.POST["prisoner_name"]
+        prisoners = Prisoner.objects.filter(first_name=first_name)
 
-        return redirect(f"/update/prisoner_select/{prisoner_id}")
+        data = {
+            "prisoners": prisoners,
+        }
+        
+        return render(request, "main/update_prisoner_select_options.html", data)
     else:
         return render(request, "main/update_prisoner_select.html")
     
@@ -287,23 +375,34 @@ def edit_update_prisoner_lawyer(request, prisoner_id, lawyer_id):
     return redirect(f"/update/prisoner_select/lawyer/{prisoner_id}")
 
 def view_prisoner_select(request):
+    # if request.method == "POST":
+    #     name = request.POST["prisoner_name"]
+    #     uuid = request.POST["UUID"]
+    #     split = name.split()
+    #     prisoner_id = None
+    #     prisoners = Prisoner.objects.filter(first_name=split[0])
+    #     for prisoner in prisoners:
+    #         if f'{prisoner.first_name} {prisoner.last_name}'.lower() == name.lower() and prisoner.uuid == uuid: # type: ignore
+    #             prisoner_id = prisoner.id # type: ignore
+
+    #     if prisoner_id == None:
+    #         data = {
+    #             "error": "Prisoner Doesn't Exist!"
+    #         }
+    #         return render(request, "main/view_prisoner_select.html", data)
+
+    #     return redirect(f"/view/prisoner_details/{prisoner_id}")
+    # else:
+    #     return render(request, "main/view_prisoner_select.html")
     if request.method == "POST":
-        name = request.POST["prisoner_name"]
-        uuid = request.POST["UUID"]
-        split = name.split()
-        prisoner_id = None
-        prisoners = Prisoner.objects.filter(first_name=split[0])
-        for prisoner in prisoners:
-            if f'{prisoner.first_name} {prisoner.last_name}'.lower() == name.lower() and prisoner.uuid == uuid: # type: ignore
-                prisoner_id = prisoner.id # type: ignore
+        first_name = request.POST["prisoner_name"]
+        prisoners = Prisoner.objects.filter(first_name=first_name)
 
-        if prisoner_id == None:
-            data = {
-                "error": "Prisoner Doesn't Exist!"
-            }
-            return render(request, "main/view_prisoner_select.html", data)
-
-        return redirect(f"/view/prisoner_details/{prisoner_id}")
+        data = {
+            "prisoners": prisoners,
+        }
+        
+        return render(request, "main/view_prisoner_select_options.html", data)
     else:
         return render(request, "main/view_prisoner_select.html")
 
@@ -333,3 +432,124 @@ def generic(request):
 def register(request):
     return render(request, "register.html")
 
+def search_by_filters(request):
+    return render(request, "main/search_by_filters.html")
+
+def search_by_cell(request):
+    cell_no = request.GET.get('cell_no', None)
+    if cell_no == 'cell1':
+        prisoners = Prisoner.objects.filter(ward=1)
+    elif cell_no == 'cell2':
+        prisoners = Prisoner.objects.filter(ward=2)
+    elif cell_no == 'cell3':
+        prisoners = Prisoner.objects.filter(ward=3)
+    elif cell_no == 'cell4':
+        prisoners = Prisoner.objects.filter(ward=4)
+    elif cell_no == 'cell5':
+        prisoners = Prisoner.objects.filter(ward=5)
+    else:
+        prisoners = None
+    list_of_crimes = []
+    for prisoner in prisoners:
+        crimes = Crime.objects.filter(prisoner=prisoner)
+        prisoner_crime = []
+        for crime in crimes:
+            prisoner_crime.append(crime)
+        list_of_crimes.append(prisoner_crime)
+    prisoners_crimes = zip(prisoners, list_of_crimes)
+    data = {
+        'prisoners_crimes': prisoners_crimes,
+        'cell_no': cell_no,
+    }
+    return render(request, "main/search_by_cell_result.html", data)
+
+def search_by_crime(request):
+    crime_type = request.GET.get('case_type', None)
+    if crime_type == 'option1':
+        crimes = Crime.objects.filter(crime_type='Violent Crimes')
+    elif crime_type == 'option2':
+        crimes = Crime.objects.filter(crime_type='Sex Crime')
+    elif crime_type == 'option3':
+        crimes = Crime.objects.filter(crime_type='Property Crime')
+    elif crime_type == 'option4':
+        crimes = Crime.objects.filter(crime_type='Fraud')
+    elif crime_type == 'option5':
+        crimes = Crime.objects.filter(crime_type='Drug Crime')
+    elif crime_type == 'option6':
+        crimes = Crime.objects.filter(crime_type='Cybercrime')
+    elif crime_type == 'option7':
+        crimes = Crime.objects.filter(crime_type='Organised Crime')
+    else:
+        crimes = None
+
+    return render(request, "main/search_by_crime_result.html", {'crimes': crimes})
+
+def search_by_gender(request):
+    gender = request.GET.get('gender', None)  # Assuming gender is passed as a query parameter    
+    if gender == 'male':
+        prisoners = Prisoner.objects.filter(gender='M')
+    elif gender == 'female':
+        prisoners = Prisoner.objects.filter(gender='F')
+    else:
+        prisoners = None  # Handle the case where gender is not specified or invalid
+    list_of_crimes = []
+    for prisoner in prisoners:
+        crimes = Crime.objects.filter(prisoner=prisoner)
+        prisoner_crime = []
+        for crime in crimes:
+            prisoner_crime.append(crime)
+        list_of_crimes.append(prisoner_crime)
+    prisoners_crimes = zip(prisoners, list_of_crimes)
+    data = {
+        'prisoners_crimes': prisoners_crimes,
+        'gender': gender,
+    }
+    return render(request, "main/search_by_gender_result.html", data)
+
+
+def delete_prisoner_select(request):
+    # if request.method == "POST":
+    #     name = request.POST["prisoner_name"]
+    #     uuid = request.POST["UUID"]
+    #     split = name.split()
+    #     prisoner_id = None
+    #     prisoners = Prisoner.objects.filter(first_name=split[0])
+    #     for prisoner in prisoners:
+    #         if f'{prisoner.first_name} {prisoner.last_name}'.lower() == name.lower() and prisoner.uuid == uuid: # type: ignore
+    #             prisoner_id = prisoner.id # type: ignore
+        
+    #     if prisoner_id == None:
+    #         data = {
+    #             "error": "Prisoner Doesn't Exist!"
+    #         }
+    #         return render(request, "main/select_prisoner.html", data)
+
+    #     return redirect(f"/delete_prisoner_select/{prisoner_id}")
+    # else:
+    #     return render(request, "main/delete_prisoner_select.html")
+    if request.method == "POST":
+        first_name = request.POST["prisoner_name"]
+        prisoners = Prisoner.objects.filter(first_name=first_name)
+
+        data = {
+            "prisoners": prisoners,
+        }
+        
+        return render(request, "main/delete_prisoner_select_options.html", data)
+    else:
+        return render(request, "main/delete_prisoner_select.html")
+    
+def delete_and_show(request, prisoner_id):
+    data = {
+        "prisoner_id": prisoner_id
+    }
+    prisoner = Prisoner.objects.get(pk = prisoner_id)
+    crimes = Crime.objects.filter(prisoner=prisoner)
+    for crime in crimes:
+        fir = FIR.objects.get(crime.fir_id)
+        fir.delete()
+    prisoner.delete()
+    return render(request, "main/delete_and_show.html")
+
+def confirmation(request):
+    return render(request, "main/confirmation.html")

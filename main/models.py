@@ -5,12 +5,13 @@ from django.db import models
 class Prisoner(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    gender = models.CharField(max_length=100, default='M')
     address = models.TextField()
     mobile_numbers = models.TextField(help_text="Enter mobile numbers, separated by commas")
     email = models.EmailField()
     join_date = models.DateField()
     duration = models.CharField(max_length=100)
-    exit_date = models.DateField()
+    exit_date = models.DateField(blank=True, null=True)
     ward = models.CharField(max_length=100)
     uuid = models.CharField(max_length=100)
 
